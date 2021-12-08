@@ -1,0 +1,31 @@
+package com.koreait.app.members;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.koreait.action.Action;
+import com.koreait.action.ActionForward;
+import com.koreait.app.members.dao.MembersDAO;
+
+public class MemberSignoutAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		req.setCharacterEncoding("UTF-8");
+
+		/*MembersDAO dao = new MembersDAO();
+		HttpSession session = req.getSession();
+		
+		dao.signOut(session.getId());*/
+		
+		
+		ActionForward foward = new ActionForward();
+		
+		foward.setRedirect(true);
+		foward.setPath(req.getContextPath() + "/app/goodBye.jsp/");
+		
+		return foward;
+	}
+
+}

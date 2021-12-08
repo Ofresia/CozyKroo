@@ -1,0 +1,133 @@
+package com.koreait.app.boards;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.koreait.action.ActionForward;
+
+public class BoardsFrontController extends HttpServlet{
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doProcess(req, resp);
+	}
+	
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doProcess(req, resp);
+	}
+	
+	protected void doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String command = requestURI.substring(contextPath.length());
+		ActionForward forward = null;
+		
+		System.out.println("check");
+		switch(command) {
+		//BoardList 분기처리
+		case "/boards/BoardsList.bo":
+			System.out.println("1");
+			switch (req.getParameter("type")) {
+			//노하우 게시판
+			case "1":
+				//execute : db를 갔다오거나, 연산이 필요한 경우 사용, 페이지 이동
+				try {forward = new KnowhowListOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+				break;
+			//남편 게시판
+			case "2":
+				try {forward = new HusbandListOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+				break;
+			//중고 게시판
+			case "3":
+				try {forward = new SecondhandListOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+				break;
+			}
+			break;
+		case "/boards/BoardsWrite.bo":
+			System.out.println("2");
+			switch (req.getParameter("type")) {
+			//노하우 게시판
+			case "1":
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/boards/boardsWrite.jsp?type=1");
+				break;
+				//남편 게시판
+			case "2":
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/boards/boardsWrite.jsp?type=2");
+				break;
+				//중고 게시판
+			case "3":
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/boards/boardsWrite.jsp?type=3");
+				break;		
+			}
+			break;
+		case "/boards/BoardsWriteOk.bo":
+			System.out.println("3");
+			switch ((Integer)req.getSession().getAttribute("type")) {
+			//노하우 게시판
+			case 1:
+				try {forward = new KnowhowWriteAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+				break;
+			//남편 게시판
+//			case "2":
+//				try {forward = new HusbandWriteAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+//				break;
+//			//중고 게시판
+//			case "3":
+//				try {forward = new SecondhandWriteAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+//				break;		
+			}
+			break;
+		case "/boards/BoardsViewReturn.bo":
+			System.out.println("4");
+			switch (req.getParameter("type")) {
+			//노하우 게시판
+			case "1":
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/boards/boardsList.jsp?type=1");
+				break;
+			//남편 게시판
+			case "2":
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/boards/boardsList.jsp?type=2");
+				break;
+			//중고 게시판
+			case "3":
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/boards/boardsList.jsp?type=3");
+				break;		
+			}
+			
+		case "/boards/Fileupload.bo":
+			System.out.println("나왔어");
+			try {forward = new Upload().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+			
+			break;
+			}
+		
+			System.out.println("5");
+			if(forward != null) {
+				if(forward.isRedirect()) {
+					resp.sendRedirect(forward.getPath());
+				}else{
+					RequestDispatcher dispatcher = req.getRequestDispatcher(forward.getPath());
+					dispatcher.forward(req, resp);
+				}
+			}
+		}
+	}
+

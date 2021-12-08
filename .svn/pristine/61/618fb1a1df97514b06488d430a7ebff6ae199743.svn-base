@@ -1,0 +1,141 @@
+/**
+ * 	회원가입
+ */
+ //체크박스 전체 선택
+$(".checkbox_group").on("click", "#checkAll", function() {
+    $(this).parents(".checkbox_group").find('input').prop("checked", $(this).is(":checked"));
+});
+
+// 체크박스 개별 선택 
+$("#term").on("click", function(){
+	if($(this).is(":checked")){
+		//체크가 되어 있다면,
+		$("#Check1").attr("checked", true);
+		$("#Check2").attr("checked", true);
+	}else{
+		//체크되어 있지 않다면
+		$("#Check1").attr("checked", false);
+		$("#Check2").attr("checked", false);
+	}
+})
+
+var check = false;
+var idCheck = false;
+var form = document.joinForm;
+function formSubmit(){
+	
+	if(!form.member_id.value || !idCheck){
+		alert("아이디를 확인해주세요");
+		form.member_id.focus();
+		return false;
+	}
+	
+	if(!$("#member_pw").val()){
+		alert("비밀번호를 입력해주세요.");
+		form.member_pw.focus();
+		return false;
+	}else{
+		if($("#member_pw").val().length < 4 || $("#member_pw").val().length > 20){
+			alert("비밀번호는 4자 이상 20자 이하입니다.");
+			form.member_pw.focus();
+			return false;
+		}
+	}
+	
+	if(!$("#member_name").val()){
+		alert("이름을 입력해주세요.");
+		form.member_name.focus();
+		return false;
+	}
+	
+	if(!form.member_email.value){
+		alert("이메일을 확인해주세요.");
+		form.member_email.focus();
+		return false;
+	}else if(form.member_email.value.indexOf("@") == -1 || form.member_email.value.indexOf(".") == -1 ){
+		alert("이메일을 확인해주세요.");
+		form.member_email.focus();
+		return false;
+	}
+	
+	if(!form.member_phoneNum.value){
+		alert("핸드폰 번호를 입력해주세요.");
+		form.member_phoneNum.focus();
+		return false;
+	}else if(form.member_phoneNum.value.indexOf("-") != -1){
+		alert(" - 를 제외해주세요.");
+		form.member_phoneNum.focus();
+		return false;
+	}
+	
+	if(isNaN(form.member_childNum.value)){
+		alert("자녀 수에 글자를 입력하지는 않으셨나요?");
+		form.member_childNum.focus()
+		return false;
+	}
+	
+	if(!$("#Check1").is(":checked")){
+		alert("이용약관 동의가 필요합니다.");
+		form.term1.focus()
+		return false;
+	}
+	if(!$("#Check2").is(":checked")){
+		alert("이용약관 동의가 필요합니다.");
+		form.term1.focus()
+		return false;
+	}
+	
+	
+	if(!form.member_id.readOnly){
+		alert("중복검사를 진행해주세요");
+		return false;
+	}
+	form.submit();
+}
+
+function checkId(id){
+	if(id == ""){
+		$("#idCheck_text").text("");
+		return;
+	}
+	
+	$.ajax({
+		url:contextPath+"/members/MemberIdCheckOkAction.me?id="+id,
+		type:"get",
+		dataType:"json",
+		success:function(result){
+			if(result.status == "ok"){
+				//DOM
+				$("#idCheck_text").text("사용 가능");
+				$("#idCheck_text").css("color", "blue");
+				idCheck = true;
+				form.member_id.readOnly = true;
+			}else{
+				//DOM
+				$("#idCheck_text").text("사용 불가");
+				$("#idCheck_text").css("color", "red");
+			}
+		},
+		error:function(){
+			console.log("오류");
+		}
+	});
+}
+
+$("input[name='member_id']").focusout(function(){
+	//중복 검사
+	checkId($(this).val())
+})
+
+$("#member_id").on("click",function(){
+	form.member_id.readOnly = false;
+})
+
+
+
+
+
+
+
+
+

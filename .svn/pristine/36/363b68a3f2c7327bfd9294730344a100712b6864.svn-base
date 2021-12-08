@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+   파라미터로 받은 값에 접근할 때에는 #{} 또는 ${}를 사용하여 가져온다.
+   
+   1. #{}
+      받아온 파라미터의 타입에 상관없이 String 타입으로 변경된다.
+      사용자가 직접 입력한 값에 사용하는 것이 좋다(보안에 유리하다).
+   
+   2. ${}
+      받아온 파라미터의 타입을 그대로 유지한다.
+      사용자가 직접 입력한 값을 전달받을 때에는 사용하지 않는 것이 좋다(쿼리 주입 때문에 보안에 취약하다).
+      테이블이나 컬럼명을 파라미터로 받을 때 사용한다.
+   
+-->
+<mapper namespace="Boards">
+
+
+<!-- SECONDHAND 최신순으로 리스트조회-->
+   <select id="getSecondhandList" parameterType="map" resultType="secondhandVO">
+      SELECT BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE, BOARD_VIEWNUM, BOARD_LIKE
+      FROM
+         (SELECT ROWNUM R,  B.* FROM
+            (SELECT * FROM TBL_SECONDHAND ORDER BY BOARD_NUM DESC) B)
+      WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+<!-- KNOWHOW 최신순으로 리스트조회-->   
+   <select id="getKnowhowList" parameterType="map" resultType="knowhowVO">
+      SELECT BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE, BOARD_VIEWNUM, BOARD_LIKE
+      FROM
+         (SELECT ROWNUM R,  B.* FROM
+            (SELECT * FROM TBL_KNOWHOW ORDER BY BOARD_NUM DESC) B)
+      WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+<!-- HUSBAND 최신순으로 리스트조회-->   
+   <select id="getHusbandList" parameterType="map" resultType="husbandVO">
+      SELECT BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE, BOARD_VIEWNUM, BOARD_LIKE
+      FROM
+         (SELECT ROWNUM R,  B.* FROM
+            (SELECT * FROM TBL_HUSBAND ORDER BY BOARD_NUM DESC) B)
+      WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+   
+<!-- SECONDHAN 게시글 갯수 -->
+   <select id="getSecondhandTotal" resultType="_int">
+      SELECT COUNT(BOARD_NUM) FROM TBL_SECONDHAND
+   </select>
+   
+<!-- KNOWHOW 게시글 갯수 -->   
+   <select id="getKnowhowTotal" resultType="_int">
+      SELECT COUNT(BOARD_NUM) FROM TBL_KNOWHOW
+   </select>
+   
+<!-- HUSBAND 게시글 갯수 -->   
+   <select id="getHusbandTotal" resultType="_int">
+      SELECT COUNT(BOARD_NUM) FROM TBL_HUSBAND
+   </select>
+      
+<!-- SECONDHAND 정보 DB 담기 -->
+   <insert id="insertSecondhand" parameterType="secondhandVO">
+      INSERT INTO TBL_SECONDHAND
+      (BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE)
+      VALUES (#{board_num}, #{board_title}, #{board_content}, #{member_id}, SYSDATE)   
+   </insert>
+   
+<!-- KNOWHOW 정보 DB 담기 -->   
+   <insert id="insertKnowhow" parameterType="knowhowVO">
+      INSERT INTO TBL_KNOWHOW
+      (BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE)
+      VALUES (#{board_num}, #{board_title}, #{board_content}, #{member_id}, SYSDATE)   
+   </insert>
+   
+<!-- HUSBAND 정보 DB 담기 -->      
+   <insert id="insertHusband" parameterType="husbandVO">
+      INSERT INTO TBL_HUSBAND
+      (BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE)
+      VALUES (#{board_num}, #{board_title}, #{board_content}, #{member_id}, SYSDATE)   
+   </insert>
+
+<!-- SECONDHAND 다음 게시글 번호 (파일첨부)  -->
+   <select id="getSecondhandSeq" resultType="_int">
+      SELECT SEQ_SECONDHAND.NEXTVAL FROM DUAL
+   </select>
+   
+<!-- KNOWHOW 다음 게시글 번호 (파일첨부)-->
+   <select id="getKnowhowSeq" resultType="_int">
+      SELECT SEQ_KNOWHOW.NEXTVAL FROM DUAL
+   </select>
+   
+<!-- HUSBAND  다음 게시글 번호 (파일첨부)-->
+   <select id="getHusbandSeq" resultType="_int">
+      SELECT SEQ_HUSBAND.NEXTVAL FROM DUAL
+   </select>
+      
+   
+<!-- SECONDHAND  -->   
+   <select id="getSecondhandDetail" parameterType="_int" resultType="secondhandVO">
+      SELECT BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE, BOARD_VIEWNUM
+      FROM TBL_SECONDHAND WHERE BOARD_NUM = #{board_num}
+   </select>
+
+<!-- KNOWHOW -->
+   <select id="getKnowhowDetail" parameterType="_int" resultType="knowhowVO">
+      SELECT BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE, BOARD_VIEWNUM
+      FROM TBL_KNOWHOW WHERE BOARD_NUM = #{board_num}
+   </select>
+
+<!-- HUSBAND -->   
+   <select id="getHusbandDetail" parameterType="_int" resultType="husbandVO">
+      SELECT BOARD_NUM, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE, BOARD_VIEWNUM
+      FROM TBL_HUSBAND WHERE BOARD_NUM = #{board_num}
+   </select>
+
+<!-- SECONDHAND 게시글 수정-->   
+   <update id="updateSecondhand" parameterType="secondhandVO">
+      UPDATE TBL_SECONDHAND
+      SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content}
+      WHERE BOARD_NUM = #{board_num}
+   </update>
+   
+<!-- KNOWHOW 게시글 수정 -->   
+   <update id="updateKnowhow" parameterType="knowhowVO">
+      UPDATE TBL_KNOWHOW
+      SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content}
+      WHERE BOARD_NUM = #{board_num}
+   </update>
+   
+<!-- HUSBAND 게시글 수정 -->   
+   <update id="updateHusband" parameterType="husbandVO">
+      UPDATE TBL_HUSBAND
+      SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content}
+      WHERE BOARD_NUM = #{board_num}
+   </update>
+
+<!-- SECONDHAND 게시글 조회수 증가 -->   
+   <update id="updateSecondhandReadCount" parameterType="_int">
+      UPDATE TBL_SECONDHAND
+      SET BOARD_VIEWNUM = BOARD_VIEWNUM + 1
+      WHERE BOARD_NUM = #{board_num}
+   </update>
+
+<!-- KNOWHOW 게시글 조회수 증가 -->
+   <update id="updateKnowhowReadCount" parameterType="_int">
+      UPDATE TBL_KNOWHOW
+      SET BOARD_VIEWNUM = BOARD_VIEWNUM + 1
+      WHERE BOARD_NUM = #{board_num}
+   </update>
+   
+<!-- HUSBAND 게시글 조회수 증가 -->
+   <update id="updateHusbandReadCount" parameterType="_int">
+      UPDATE TBL_HUSBAND
+      SET BOARD_VIEWNUM = BOARD_VIEWNUM + 1
+      WHERE BOARD_NUM = #{board_num}
+   </update>
+
+<!-- SECONDHAND 게시물 삭제 -->
+   <delete id="deleteSecondhand" parameterType="_int">
+      DELETE FROM TBL_SECONDHAND
+      WHERE BOARD_NUM = #{board_num}
+   </delete>
+
+<!-- KNOWHOW 게시물 삭제 -->   
+   <delete id="deleteKnowhow" parameterType="_int">
+      DELETE FROM TBL_KNOWHOW
+      WHERE BOARD_NUM = #{board_num}
+   </delete>
+
+<!-- HUSBAND 게시물 삭제 -->   
+   <delete id="deleteHusband" parameterType="_int">
+      DELETE FROM TBL_HUSBAND
+      WHERE BOARD_NUM = #{board_num}
+   </delete>
+   
+<!-- KNOWHOW 댓글 조회 -->
+   <select id="getKnoreplyDetail" parameterType="_int" resultType="knoreplyVO">
+      SELECT REPLY_NUM, BOARD_NUM, MEMBER_ID, REPLY_CONTENT, BOARD_NUM
+      FROM TBL_KNOREPLY
+      WHERE BOARD_NUM = #{board_num} ORDER BY REPLY_NUM DESC
+   </select>
+   
+<!-- HUSBAND 댓글 조회 -->
+   <select id="getHusreplyDetail" parameterType="_int" resultType="husreplyVO">
+      SELECT REPLY_NUM, BOARD_NUM, MEMBER_ID, REPLY_CONTENT, BOARD_NUM
+      FROM TBL_HUSREPLY
+      WHERE BOARD_NUM = #{board_num} ORDER BY REPLY_NUM DESC
+   </select>
+   
+<!-- SECONDHAND 댓글 조회 -->
+   <select id="getSecreplyDetail" parameterType="_int" resultType="secreplyVO">
+      SELECT REPLY_NUM, BOARD_NUM, MEMBER_ID, REPLY_CONTENT, BOARD_NUM
+      FROM TBL_SECREPLY
+      WHERE BOARD_NUM = #{board_num} ORDER BY REPLY_NUM DESC
+   </select>
+
+<!-- INSERT INTO TBL_KNOREPLY
+(BOARD_NUM, REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE)
+VALUES(1, SEQ_KNOREPLY.NEXTVAL , 'sibal12', 'woojidi', SYSDATE); -->
+<!-- KNOWHOW 댓글  추가 -->
+   <insert id="insertKnoreply" parameterType="knoreplyVO">
+      INSERT INTO TBL_KNOREPLY
+		(BOARD_NUM, REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE)
+			VALUES(#{board_num}, SEQ_KNOREPLY.NEXTVAL , #{reply_content}, #{member_id}, SYSDATE)
+   </insert>
+   
+<!-- HUSBAND 댓글 추가 -->
+   <insert id="insertHusreply" parameterType="husreplyVO">
+      INSERT INTO TBL_HUSREPLY
+      (BOARD_NUM, REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE)
+     	 VALUES(#{board_num}, SEQ_HUSREPLY.NEXTVAL , #{reply_content}, #{member_id}, SYSDATE)
+   </insert>
+   
+<!-- SECONDHAND 댓글 추가 -->
+   <insert id="insertSecreply" parameterType="secreplyVO">
+      INSERT INTO TBL_SECREPLY
+      (BOARD_NUM, REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE)
+     	 VALUES(#{board_num}, SEQ_SECREPLY.NEXTVAL , #{reply_content}, #{member_id}, SYSDATE)
+   </insert>
+   
+<!-- KNOWHOW 댓글 번호로 댓글 삭제 -->   
+   <delete id="deleteKnoreplyToReplyNum" parameterType="_int">
+      DELETE FROM TBL_KNOREPLY
+      WHERE REPLY_NUM = #{reply_num}
+   </delete>
+
+<!-- HUSBAND 댓글 번호로 댓글 삭제 -->   
+   <delete id="deleteHusreplyToReplyNum" parameterType="_int">
+      DELETE FROM TBL_HUSREPLY
+      WHERE REPLY_NUM = #{reply_num}
+   </delete>
+
+<!-- SECONDHAND 댓글 번호로 댓글 삭제 -->   
+   <delete id="deleteSecreplyToReplyNum" parameterType="_int">
+      DELETE FROM TBL_SECREPLY
+      WHERE REPLY_NUM = #{reply_num}
+   </delete>
+   
+<!-- KNOWHOW 게시글 번호로 댓글 삭제 -->   
+   <delete id="deleteKnoreplyToboardNum" parameterType="_int">
+      DELETE FROM TBL_KNOREPLY
+      WHERE BOARD_NUM = #{board_num}
+   </delete>
+
+<!-- HUSBAND 게시글 번호로 댓글 삭제 -->   
+   <delete id="deleteHusreplyToboardNum" parameterType="_int">
+      DELETE FROM TBL_HUSREPLY
+      WHERE BOARD_NUM = #{board_num}
+   </delete>
+
+<!-- SECONDHAND 게시글 번호로 댓글 삭제 -->   
+   <delete id="deleteSecreplyToboardNum" parameterType="_int">
+      DELETE FROM TBL_SECREPLY
+      WHERE BOARD_NUM = #{board_num}
+   </delete>
+   
+<!-- KNOREPLY 댓글 최신순으로 리스트 조회 -->
+   <select id="getKnoreplyTotalList" parameterType="map" resultType="knoreplyVO">
+      SELECT REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE, BOARD_NUM
+      FROM
+         (SELECT ROWNUM R,  B.* FROM
+            (SELECT * FROM TBL_KNOREPLY WHERE BOARD_NUM = #{board_num} ORDER BY REPLY_NUM DESC) B)
+      WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+
+<!-- HUSREPLY 댓글 최신순으로 리스트 조회 -->
+   <select id="getHusreplyTotalList" parameterType="map" resultType="husreplyVO">
+      SELECT REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE, BOARD_NUM
+      FROM
+         (SELECT ROWNUM R,  B.* FROM
+            (SELECT * FROM TBL_HUSREPLY WHERE BOARD_NUM = #{board_num} ORDER BY REPLY_NUM DESC) B)
+      WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+
+<!-- SECREPLY 댓글 최신순으로 리스트 조회 -->
+   <select id="getSecreplyTotalList" parameterType="map" resultType="secreplyVO">
+      SELECT REPLY_NUM, REPLY_CONTENT, MEMBER_ID, REPLY_DATE, BOARD_NUM
+      FROM
+         (SELECT ROWNUM R,  B.* FROM
+            (SELECT * FROM TBL_SECREPLY WHERE BOARD_NUM = #{board_num} ORDER BY REPLY_NUM DESC) B)
+      WHERE R BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+<!-- KNOREPLY 댓글 갯수 -->   
+   <select id="getKnoreplyTotal" parameterType="_int" resultType="_int">
+      SELECT COUNT(BOARD_NUM) FROM TBL_KNOREPLY WHERE BOARD_NUM = #{board_num}
+   </select>
+
+<!-- HUSREPLY 댓글 갯수 -->   
+   <select id="getHusreplyTotal" parameterType="_int" resultType="_int">
+      SELECT COUNT(BOARD_NUM) FROM TBL_HUSREPLY WHERE BOARD_NUM = #{board_num}
+   </select>
+
+<!-- SECREPLY 댓글 갯수 -->   
+   <select id="getSecreplyTotal" parameterType="_int" resultType="_int">
+      SELECT COUNT(BOARD_NUM) FROM TBL_SECREPLY WHERE BOARD_NUM = #{board_num}
+   </select>
+   
+   <!-- 댓글 번호로 kno댓글 수정 -->
+   <update id="updateKnoreply" parameterType="knoreplyVO" >
+   	UPDATE TBL_KNOREPLY SET REPLY_CONTENT=#{reply_content} WHERE REPLY_NUM=#{reply_num}
+   </update>
+   
+   <!-- 댓글 번호로 hus댓글 수정 -->
+   <update id="updateHusreply" parameterType="husreplyVO">
+   	UPDATE TBL_HUSREPLY SET REPLY_CONTENT=#{reply_content} WHERE REPLY_NUM=#{reply_num}
+   </update>
+   
+   <!-- 댓글 번호로 sec댓글 수정 -->
+   <update id="updateSecreply" parameterType="secreplyVO">
+   	UPDATE TBL_SECREPLY SET REPLY_CONTENT=#{reply_content} WHERE REPLY_NUM=#{reply_num}
+   </update>
+   
+   <!-- kno 게시글 5개 가져오기 -->
+   <select id="getKnoMainList" resultType="knowhowVO">
+   	SELECT BOARD_NUM, MEMBER_ID, BOARD_TITLE, BOARD_CONTENT, BOARD_VIEWNUM, BOARD_DATE, BOARD_LIKE
+	FROM
+		(SELECT ROWNUM R, T.* FROM
+			(SELECT * FROM TBL_KNOWHOW ORDER BY BOARD_DATE DESC) T)
+				WHERE R BETWEEN 1 AND 5
+   </select>
+  
+   <!-- hus 게시글 5개 가져오기 -->
+   <select id="getHusMainList" resultType="husbandVO">
+	SELECT BOARD_NUM, MEMBER_ID, BOARD_TITLE, BOARD_CONTENT, BOARD_VIEWNUM, BOARD_DATE, BOARD_LIKE
+	FROM
+		(SELECT ROWNUM R, T.* FROM
+			(SELECT * FROM TBL_HUSBAND ORDER BY BOARD_DATE DESC) T)
+				WHERE R BETWEEN 1 AND 5
+   </select>
+  
+   
+   <!-- sec 게시글 5개 가져오기 -->
+   <select id="getSecMainList" resultType="secondhandVO">
+	SELECT BOARD_NUM, MEMBER_ID, BOARD_TITLE, BOARD_CONTENT, BOARD_VIEWNUM, BOARD_DATE, BOARD_LIKE
+	FROM
+		(SELECT ROWNUM R, T.* FROM
+			(SELECT * FROM TBL_SECONDHAND ORDER BY BOARD_DATE DESC) T)
+				WHERE R BETWEEN 1 AND 5
+   </select>
+  
+  	<!-- 동일 게시글 추천 여부 검색 -->
+	<select id="kno_check" parameterType="knolikeVO" resultType="_int">
+		SELECT COUNT(*) FROM TBL_KNOWLIKE WHERE BOARD_NUM = #{board_num} AND MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 게시글 추천 -->
+	<insert id="kno_update" parameterType="knolikeVO">
+		INSERT INTO TBL_KNOWLIKE VALUES(#{board_num}, #{member_id})
+	</insert>
+	
+	<!-- 게시글 추천 취소 -->
+	<delete id="kno_delete" parameterType="knolikeVO">
+		DELETE FROM TBL_KNOWLIKE WHERE BOARD_NUM = #{board_num} AND MEMBER_ID = #{member_id}
+	</delete>
+	
+	<!-- 게시글 추천수 -->
+	<select id="kno_count" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM TBL_KNOWLIKE WHERE BOARD_NUM = #{board_num}
+	</select>
+	
+  	<!-- 동일 게시글 추천 여부 검색 -->
+	<select id="hus_check" parameterType="huslikeVO" resultType="_int">
+		SELECT COUNT(*) FROM TBL_HUSLIKE WHERE BOARD_NUM = #{board_num} AND MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 게시글 추천 -->
+	<insert id="hus_update" parameterType="huslikeVO">
+		INSERT INTO TBL_HUSLIKE VALUES(#{board_num}, #{member_id})
+	</insert>
+	
+	<!-- 게시글 추천 취소 -->
+	<delete id="hus_delete" parameterType="huslikeVO">
+		DELETE FROM TBL_HUSLIKE WHERE BOARD_NUM = #{board_num} AND MEMBER_ID = #{member_id}
+	</delete>
+	
+	<!-- 게시글 추천수 -->
+	<select id="hus_count" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM TBL_HUSLIKE WHERE BOARD_NUM = #{board_num}
+	</select>
+	
+  	<!-- 동일 게시글 추천 여부 검색 -->
+	<select id="sec_check" parameterType="seclikeVO" resultType="_int">
+		SELECT COUNT(*) FROM TBL_SECLIKE WHERE BOARD_NUM = #{board_num} AND MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 게시글 추천 -->
+	<insert id="sec_update" parameterType="seclikeVO">
+		INSERT INTO TBL_SECLIKE VALUES(#{board_num}, #{member_id})
+	</insert>
+	
+	<!-- 게시글 추천 취소 -->
+	<delete id="sec_delete" parameterType="seclikeVO">
+		DELETE FROM TBL_SECLIKE WHERE BOARD_NUM = #{board_num} AND MEMBER_ID = #{member_id}
+	</delete>
+	
+	<!-- 게시글 추천수 -->
+	<select id="sec_count" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM TBL_SECLIKE WHERE BOARD_NUM = #{board_num}
+	</select>
+
+  
+</mapper>
+
+
+
+
+
+
+
+
+

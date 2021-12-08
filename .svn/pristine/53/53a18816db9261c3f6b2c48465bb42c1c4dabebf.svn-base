@@ -1,0 +1,30 @@
+/**
+ * 
+ */
+   	 // 메인화면 페이지 로드 함수
+    	$(document).ready(function () {
+    		var fontList = ['맑은 고딕','굴림','돋움','바탕','궁서','NotoSansKR','Gaegu'];
+      	  $('#summernote').summernote({
+            placeholder: '내용을 작성하세요',
+            height: 500,
+            maxHeight: 550,
+            lang: 'ko-KR', // 언어 세팅
+            fontNames: fontList, 
+            fontNamesIgnoreCheck: fontList,
+
+            toolbar: [
+                // [groupName, [list of button]]
+                ['Font Style', ['fontname']],
+                ['style', ['bold', 'italic', 'underline']],
+                ['font', ['strikethrough']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['paragraph']],
+                ['height', ['height']],
+                ['Insert', ['picture']],
+                ['Insert', ['link']],
+                ['Misc', ['fullscreen']]
+                
+             ]
+      	  });
+ 	  });

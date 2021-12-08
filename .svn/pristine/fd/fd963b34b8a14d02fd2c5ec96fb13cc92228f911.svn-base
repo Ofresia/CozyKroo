@@ -1,0 +1,34 @@
+package com.koreait.app.members;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
+
+import com.koreait.action.Action;
+import com.koreait.action.ActionForward;
+import com.koreait.app.members.dao.MembersDAO;
+import com.koreait.app.members.vo.MembersVO;
+
+public class MemberFindIdOkAction implements Action {
+
+   @Override
+   public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+      MembersDAO dao = new MembersDAO();
+      String name = req.getParameter("name");
+      String phoneNum = req.getParameter("phoneNum");
+      ActionForward forward = new ActionForward();
+      System.out.println(name);
+      System.out.println(phoneNum);
+      
+      String findId = dao.findMId(name, phoneNum);
+      
+      System.out.println(findId);
+      req.setAttribute("findId", findId);
+      
+      forward.setRedirect(true);
+      forward.setPath(req.getContextPath() +"/app/members/resultId.jsp?findId="+ findId);
+      
+      return forward;
+   }
+
+}

@@ -1,0 +1,56 @@
+package com.koreait.app.boards;
+
+import java.io.File;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.koreait.action.ActionForward;
+import com.koreait.app.boards.dao.BoardsDAO;
+import com.koreait.app.boards.vo.KnowhowVO;
+import com.koreait.app.files.filesDAO;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+public class KnoModifyOkAction {
+	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		
+		String saveFolder = "D:\\gb_0900_kmj\\jsp\\board_mvc\\WebContent\\app\\upload";
+		int fileSize = 5 * 1024 * 1024;
+		MultipartRequest multi = null;
+		filesDAO f_dao = new filesDAO();
+		BoardsDAO b_dao = new BoardsDAO();
+		KnowhowVO vo = new KnowhowVO();
+		ActionForward forward = new ActionForward();
+		try {
+			multi = new MultipartRequest(req, saveFolder, fileSize, "UTF-8", new DefaultFileRenamePolicy());
+			int board_num = Integer.parseInt(multi.getParameter("board_num"));
+			//업로드 폴더의 파일 삭제
+			for(filesVO file : f_dao.getFiles(board_num)) {//게시글에 있는 첨부파일을 한 개씩 file객체에 담는다.
+				File f = new File(saveFolder, file.getFile_name());//삭제할 경로를 생성자를 통해 알려준다.
+				if(f.exists()) { //해당 경로에 파일이 존재한다면
+					f.delete(); //파일 삭제
+				}
+			}
+			
+			//DB에서 삭제
+			f_dao.delete(board_num);
+			f_dao.insertFile(multi, board_num);
+			
+			//게시글 정보 수정
+			vo.setBoard_num(board_num);
+			vo.setBoard_title(multi.getParameter("board_title"));
+			vo.setBoard_content(multi.getParameter("board_content"));
+			b_dao.updateKnowhow(vo);
+			b_dao.update(vo);
+
+			req.setAttribute("type", 1);
+			forward.setRedirect(false);
+			forward.setPath("/board/BoardsViewOk.bo?board_num="+board_num);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return forward;
+	}
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.koreait.app.boards.vo.BoardsVO" alias="boardsVO"/>
+		<typeAlias type="com.koreait.app.share.vo.ShareVO" alias="ShareVO"/>
+		<typeAlias type="com.koreait.app.diary.vo.DiaryVO" alias="diaryVO"/>
+		<typeAlias type="com.koreait.app.files.vo.FilesVO" alias="filesVO"/>
+		<typeAlias type="com.koreait.app.members.vo.MembersVO" alias="membersVO"/>
+	</typeAliases>
+	
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+				<property name="username" value="hr"/>
+				<property name="password" value="hr"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="com/koreait/mybatis/sql/boards.xml"/>
+		<mapper resource="com/koreait/mybatis/sql/share.xml"/>
+		<mapper resource="com/koreait/mybatis/sql/diary.xml"/>
+		<mapper resource="com/koreait/mybatis/sql/files.xml"/>
+		<mapper resource="com/koreait/mybatis/sql/members.xml"/>
+	</mappers>
+</configuration>

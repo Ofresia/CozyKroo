@@ -1,0 +1,41 @@
+package com.koreait.app.boards;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.koreait.action.Action;
+import com.koreait.action.ActionForward;
+import com.koreait.app.boards.dao.BoardsDAO;
+import com.koreait.app.boards.vo.KnowhowVO;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+public class KnowhowWriteAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		BoardsDAO dao = new BoardsDAO();
+		KnowhowVO k_vo = new KnowhowVO();
+		
+		//files 아직 안 씀.
+		ActionForward forward = new ActionForward();
+		
+		//작성한 내용 db에 넣기
+		//프론트 컨트롤러로 보내기
+		forward.setRedirect(false);
+		forward.setPath(req.getContextPath() + "/boards/BoardsViewReturn.bo");
+		//제목, 작성자, 작성내용
+		k_vo.setBoard_title(req.getParameter(""));
+		k_vo.setMember_id(req.getParameter(""));
+		k_vo.setBoard_content(req.getParameter(""));
+		
+		//게시판 타입
+		req.setAttribute("type", "1");
+		
+		//어떤 게시물인지?
+//		req.setAttribute("board_num", dao.getKnowhowSeq());
+		return forward;
+	
+	}
+
+}

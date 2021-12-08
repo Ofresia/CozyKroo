@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Members">
+
+	<!-- 회원가입 -->
+	<insert id="join" parameterType="membersVO">
+		INSERT INTO TBL_MEMBERS
+		(
+			MEMBER_NUM, MEMBER_NAME, MEMBER_ID,	MEMBER_PW, MEMBER_PHONENUM,
+			MEMBER_BABYNAME, MEMBER_BABYDATE, MEMBER_CHILDNUM, MEMBER_EMAIL
+		)
+		VALUES
+		(
+			SEQ_MEMBERS.NEXTVAL, #{member_name}, #{member_id}, #{member_pw}, #{member_phoneNum}, 
+			#{member_babyName}, #{member_babyDate}, #{member_childNum}, #{member_email}
+		)
+	</insert>
+	
+	<!-- 아이디 중복 검사 -->
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(MEMBER_ID) FROM TBL_MEMBERS WHERE MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(MEMBER_ID) FROM TBL_MEMBERS 
+		WHERE MEMBER_ID = #{member_id} AND MEMBER_PW = #{member_pw}
+	</select>
+	
+	<!-- 탈퇴 여부 -->
+	<select id="checkSignOut" parameterType="string" resultType="_int">
+		SELECT MEMBER_STATUS FROM TBL_MEMBERS WHERE MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findId" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(MEMBER_ID) FROM TBL_MEMBERS WHERE MEMBER_NAME = #{member_name} AND MEMBER_PHONENUM = #{member_phoneNum}
+	</select>
+	
+	<!-- 찾은 아이디 보내기 -->
+	<select id="findMId" parameterType="hashmap" resultType="string">
+		SELECT MEMBER_ID FROM TBL_MEMBERS WHERE MEMBER_NAME = #{member_name} AND MEMBER_PHONENUM = #{member_phoneNum}
+	</select>
+	
+	<!-- 비밀번호 회원 찾기 -->
+	<select id="findPw" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(MEMBER_PW) FROM TBL_MEMBERS WHERE MEMBER_ID = #{member_id} AND MEMBER_PHONENUM = #{member_phoneNum}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="update" parameterType="membersVO">
+		UPDATE TBL_MEMBERS 
+		SET 
+		MEMBER_NAME = #{member_name}, MEMBER_PW = #{member_pw}, 
+		MEMBER_PHONENUM = #{member_phoneNum}, MEMBER_BABYNAME = #{member_babyName},
+		MEMBER_BABYDATE = #{member_babyDate}, MEMBER_CHILDNUM= #{member_childNum}
+		WHERE MEMBER_ID = #{member_id}
+	</update>
+
+	<update id="pwUpdate" parameterType="hashmap">
+		UPDATE TBL_MEMBERS SET MEMBER_PW = #{member_pw} WHERE MEMBER_ID = #{member_id}
+	</update>
+
+	<!-- 회원 탈퇴 -->
+	<update id="signOut" parameterType="string">
+		UPDATE TBL_MEMBERS SET MEMBER_STATUS = 1 WHERE MEMBER_ID = #{member_id}
+	</update>
+	
+	<!-- 탈퇴 회원 복구 -->
+	<update id="restore" parameterType="membersVO">
+		UPDATE TBL_MEMBERS SET STATUS = 0 WHEREMEMBER_NAME = #{member_name} AND MEMBER_ID = #{member_id} AND MEMBER_PHONENUM = #{member_phoneNum}
+	</update>
+	
+	<!-- 회원 삭제 -->
+	<delete id="delectUser" parameterType="_int">
+		DELECT FROM TBL_MEMBERS WHERE MEMBER_NUM = #{member_num}
+	</delete>
+	
+	<!-- 회원 전체 목록 -->
+	<select id="getList" resultType="membersVO">
+		SELECT * FROM TBL_MEMBERS
+	</select>
+	
+	<!-- 아이 이름 -->
+	<select id="babyName" parameterType="_int" resultType="string">
+		SELECT MEMBER_BABYNAME FROM TBL_MEMBERS WHERE MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 출산 예정일 -->
+	<select id="babyDate" parameterType="string" resultType="string">
+		SELECT MEMBER_BABYDATE FROM TBL_MEMBERS WHERE MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 아이 숫자 -->
+	<select id="childNum" parameterType="string" resultType="_int">
+		SELECT MEMBER_CHILDNUM FROM TBL_MEMBERS WHERE MEMBER_ID = #{member_id}
+	</select>
+	
+	<!-- 네이버 로그인 한 사람 디비에 저장 -->
+	<insert id="naverJoin" parameterType="membersVO">
+		INSERT INTO TBL_MEMBERS
+		(
+			MEMBER_NUM, MEMBER_NAME, MEMBER_ID,MEMBER_EMAIL,MEMBER_STATUS
+		)
+		VALUES
+		(
+			SEQ_MEMBERS.NEXTVAL, #{member_name}, #{member_id}, #{member_email}, 2
+		)
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

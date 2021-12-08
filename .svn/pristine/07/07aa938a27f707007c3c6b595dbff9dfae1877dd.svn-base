@@ -1,0 +1,266 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<!-- Set the viewport width to device width for mobile -->
+<meta name="viewport" content="width=device-width" />
+<title>Studio Francesca - Premium Theme by WowThemes.net</title>
+<!-- CSS Files-->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/style.css">
+
+<!-- FONT Files-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/skins/blue.css">
+<!-- skin color -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}	/stylesheets/responsive.css">
+<!-- IE Fix for HTML5 Tags -->
+<!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<style>
+h1, h2, h3, h4, a, p, li, div, input {
+	font-family: 'Gowun Dodum', sans-serif !important;
+}
+
+input[type='text']{
+	display: inline-block;
+}
+
+#modal.modal-overlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.5);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(1.5px);
+	-webkit-backdrop-filter: blur(1.5px);
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+#modal .modal-window {
+	background: white;
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(13.5px);
+	-webkit-backdrop-filter: blur(13.5px);
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	width: 450px;
+	height: 600px;
+	position: relative;
+	top: -100px;
+	padding: 20px 10px;
+}
+
+#modal .title {
+	padding-left: 10px;
+	display: inline;
+	color: #7f888f;
+}
+
+#modal .title h2 {
+	display: inline;
+}
+
+#modal .close-area {
+	display: inline;
+	float: right;
+	padding-right: 10px;
+	cursor: pointer;
+	text-shadow: 1px 1px 2px gray
+	color: #7f888f;
+}
+
+#modal .content {
+	margin-top: 20px;
+	padding: 0px 10px;
+	color: #7f888f;
+}
+</style>
+<body>
+	<!-- HEADER-->
+	<jsp:include page="../header.jsp" />
+
+	<!-- article -->
+
+	<div class="row">
+		<header class="selfInfo">
+			<h1>마이페이지</h1>
+		</header>
+		<div class="row">
+		<form>
+			<table class="sevenColumns">
+				<tbody>
+					<tr>
+						<td>아이디</td>
+						<td><input type="text" value="${member.getMember_id}" readonly id="member_id"></td>
+					</tr>
+					<tr>
+						<td>비밀번호</td>
+						<td><input type="button" value="비밀번호 변경" id="member_pw"></td>
+					</tr>
+					<tr>
+						<td>PhoneNumber</td>
+						<td><input type="text" value="${member.getMember_phoneNum}" id="member_phoneNum" class="canmodi"></td>
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td><input type="text" value="${member.getMember_email}" id="member_email"  class="canmodi"></td>
+					</tr>
+					<tr>
+						<td>나의 아기</td>
+						<td><input type="text" value="${member.getMember_babyName}" id="member_babyName"   class="canmodi"></td>
+					</tr>
+					<tr>
+						<td>출산예정일</td>
+						<td><input type="text" value="${member.getMember_babyDate}" id="member_babyDate" class="canmodi"></td>
+					</tr>
+					<tr>
+						<td>자녀 수</td>
+						<td><input type="text" value="${member.getMember_childNum}" id="member_childNum" class="canmodi"></td>
+					</tr>
+					<tr>
+						<td>다이어리 모아보기</td>
+						<td><a href="#" class="secondary button">보러가기</a></td>
+					</tr>
+					<tr>
+						<td>나의 게시글 모아보기</td>
+						<td><a href="#" class="secondary button">보러가기</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="table_button"
+			style="text-align: center; margin-top: 20px; margin-bottom: 25px;">
+			<!-- <input class="secondary button" type="button" value="수정" onclick=""> -->
+			<input type="button" onclick="location.href='${papgeContext.request.contextPath}'" value="수정" class="button primery" id="modify" style="background-color: #65cdd2">
+			<input type="button" onlclick="complete()" value="확인" class="button primery modimenu" style="background-color: #65cdd2; display: none">
+			<button type="reset" value="취소" class="button primery modimenu" style="background-color: #65cdd2;">
+			<!-- <input type="button" onclick="signout()" value="회원탈퇴" class="button" id="modify"> -->
+		</div>
+			<input type="button" value="회원탈퇴" class="button" id="btn-modal">
+		</form>
+
+	</div>
+
+	<!-- 회원탈퇴  modal -->
+	<div id="modal" class="modal-overlay" style="display: none">
+		<div class="modal-window">
+			<div class="title">
+				<h2>회원탈퇴</h2>
+			</div>
+			<div class="close-area">X</div>
+			<div class="box">
+				<form>
+					<fieldset>
+						<legend>Box</legend>
+						<p>탈퇴 안내 문구</p>
+					</fieldset>
+				</form>
+			</div>
+			탈퇴하는 이유는? <select name="signOut-category" id="signOut-category">
+				<option value="">- 탈퇴사유 -</option>
+				<option value="1">정보가 마음에 들지 않아요</option>
+				<option value="2">비매너</option>
+				<option value="3">자주 사용하지 않아요</option>
+				<option value="4">기타 직접입력</option>
+			</select>
+			<div class="row" id="signOut-message">
+				<textarea name="demo-message" id="demo-message"
+					style="width: 426px; margin-bottom: 15px;" placeholder="탈퇴 사유 입력"
+					rows="6"></textarea>
+			</div>
+
+			비밀번호 입력 <input type="password" value=""> 정말 탈퇴하시겠습니까?
+			<div style="text-align: center; margin-top: 15px;">
+
+				<input type="button" class="secondary butn" id="btn-modal" onclick="location.href='${pageContext.request.contextPath}/members/MemberSignoutAction.me'" style="background-color: #d8f4f9" value="회원탈퇴">
+
+			</div>
+		</div>
+	</div>
+
+	<!-- 회원탈퇴 완료 modal -->
+	<!-- <div id="modal" class="modal-overlay" style="display: none">
+		<div class="modal-window">
+			<div class="title">
+				<h2>탈퇴완료</h2>
+			</div>
+			<div class="close-area">X</div>
+			<div class="content" style="margin: auto; text-align: center;">
+				<img src="../images/CozyKRoo_img1.png" alt=""
+					style="width: 300px; height: 300px;" />
+				<div style="margin: auto;">
+					<p>
+						<strong>회원탈퇴 완료</strong>
+					</p>
+					<p>
+						지금까지 저희 coayKRoo를 이용해주시고 사랑해주셔서 감사합니다.<br> 더욱 더 노력하고 발전하는
+						coayKRoo가 되겠습니다.
+					</p>
+					<input class="secondary button" type="button" value="메인으로"
+						onclick="">
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<!-- FOOOTER 
+================================================== -->
+	<jsp:include page="../footer.jsp" />
+	<script>
+	
+	/* function modify(){
+		$(".canmodi").attr('readonly',false);
+		$(".modimenu").css('display', 'inline');
+		$("#modify").hide();
+	}*/
+ 
+	function complete(){
+		$(".canmodi").attr('readonly', true);
+		$(".modimenu").css('dispaly', 'none'); // 확인 취소버튼
+		$("#modify").show();		//수정버튼
+	}
+	function cancel(){
+		//$(".canmodi").prop('readonly',true);
+		//$(".modimenu").css('hide', 'inline');
+		//$("#modify").display();
+	}
+	</script>
+	<!-- JAVASCRIPTS 
+================================================== -->
+	<!-- Javascript files placed here for faster loading -->
+	<script src="${pageContext.request.contextPath}/app/javascripts/foundation.min.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/jquery.easing.1.3.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/elasticslideshow.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/jquery.carouFredSel-6.0.5-packed.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/jquery.cycle.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/app.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/modernizr.foundation.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/slidepanel.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/scrolltotop.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/hoverIntent.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/superfish.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/responsivemenu.js"></script>
+	<script src="${pageContext.request.contextPath}/app/javascripts/report.js"></script>
+</body>
+</html>

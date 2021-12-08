@@ -1,0 +1,88 @@
+package com.koreait.app.members;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.koreait.action.ActionForward;
+
+public class MembersFrontController extends HttpServlet{
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doProcess(req, resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doProcess(req, resp);
+	}
+	
+	protected void doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String command = requestURI.substring(contextPath.length());
+		ActionForward forward = null;
+		
+		if(command.equals("/members/MemberIdCheckOkAction.me")) {
+			try {new  MemberIdCheckOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+			
+		}else if(command.equals("/members/MemberJoinOkAction.me")) {
+			try {forward = new MemberJoinOkAction().execute(req, resp);	} catch (Exception e) {System.out.println(e);}
+			
+		}else if(command.equals("/members/MemberLogin.me")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/app/members/login.jsp");
+			
+		}else if(command.equals("/members/MemberJoin.me")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/app/members/join.jsp");
+			
+		}else if(command.equals("/members/MemberLoginOkAction.me")) {
+			try {forward = new MemberLoginOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+			
+		}else if(command.equals("/members/MemberLogout.me")) {
+			try {forward = new MemberLogoutOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+		
+		}else if(command.equals("/members/MemberFindIdOkAction.me")) {
+			try {forward = new MemberFindIdOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+		
+		}else if(command.equals("/members/MemberFindIdOkAction.me")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/app/members/FindId.jsp");
+			
+		}else if(command.equals("/members/MemberFindPwOkAction.me")) {
+			try {forward = new MemberFindPwOkAction().execute(req, resp);} catch (Exception e) {System.out.println(e);}
+		
+		}else if(command.equals("/members/MemberFindPwOkAction.me")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/app/members/FindPw.jsp");
+			
+		}
+				
+		if(forward != null) {
+			if(forward.isRedirect()) {
+				resp.sendRedirect(forward.getPath());
+			}else{
+				RequestDispatcher dispatcher = req.getRequestDispatcher(forward.getPath());
+				dispatcher.forward(req, resp);
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

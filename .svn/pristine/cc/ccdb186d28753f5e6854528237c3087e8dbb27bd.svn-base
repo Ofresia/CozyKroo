@@ -1,0 +1,79 @@
+package com.koreait.app.members.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.koreait.app.members.vo.MembersVO;
+import com.koreait.mybatis.config.SqlMapConfig;
+
+public class MembersDAO {
+	SqlSessionFactory sessionf = SqlMapConfig.getSqlMapInterface();
+	SqlSession sql_session;
+	
+	public MembersDAO() {
+		sql_session = sessionf.openSession(true);
+	}
+	
+	//회원가입
+	public void join(MembersVO member) {
+		sql_session.insert("Member.join", member);
+	}
+	
+	//아이디 중복 검사
+	public boolean checkId(String member_id) {
+		return (Integer)sql_session.selectOne("Member.checkId", member_id) == 1;
+	}
+	
+	//로그인
+	public boolean login(String id, String pw) {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("member_id", id);
+		map.put("member_pw", pw);
+		return (Integer)sql_session.selectOne("Member.login", map) == 1;
+	}
+	
+	//탈퇴 여부
+	public boolean checkSignOut(String member_id) {
+		return (Integer)sql_session.selectOne("Members.checkSignOut", member_id) == 1;
+	}
+	
+	//회원번호로 아이디 찾기
+	public boolean findId(String name, String phoneNum) {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("member_name", name);
+		map.put("member_phonenum", phoneNum);
+		return (Integer)sql_session.selectOne("Members.findId", map) == 1;
+	}
+	
+	//회원정보 수정
+	public boolean update(MembersVO vo) {
+		return sql_session.update("Members.update", vo) == 1;
+	}
+	
+	//회원 탈퇴
+	public boolean signOut(MembersVO member) {
+		return (Integer)sql_session.update("Members.signOut", member) == 1;
+	}
+	
+	//회원 전체 목록
+	public List<MembersVO> getList() {
+		return sql_session.selectOne("Members.getList");
+	}
+	
+	//아이 이름
+	public String babyName(String id) {
+		return sql_session.selectOne("Members.babyName", id);
+	}
+	
+	//출산 예정일
+	public String babyDate(String id) {
+		return sql_session.selectOne("Members.babyDate", id);
+	}
+	//아이 숫자
+	public String childNum(String id) {
+		return sql_session.selectOne("Members.childNum", id);
+	}
+}

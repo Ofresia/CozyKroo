@@ -1,0 +1,58 @@
+package com.koreait.app.boards;
+
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+
+import com.koreait.action.Action;
+import com.koreait.action.ActionForward;
+import com.koreait.app.boards.dao.BoardsDAO;
+
+public class HusreplyListAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+		
+		int board_num = Integer.parseInt(req.getParameter("board_num"));
+		PrintWriter out = resp.getWriter();
+		BoardsDAO dao = new BoardsDAO();
+		
+		String temp = req.getParameter("page");
+		int page = temp == null ? 1 : Integer.parseInt(temp);
+		int pageSize = 10;
+
+		//게시글 끝 번호
+		int endRow = page * pageSize;
+		//게시글 시작 번호
+		int startRow = endRow - (pageSize - 1);
+		
+		//게시글 전체 개수
+		int totalCnt = dao.getHusreplyTotal();
+		
+		//페이징 처리		
+		int realEndPage = (totalCnt - 1) / pageSize + 1;		 
+		int startPage = ((page - 1) / pageSize) * pageSize + 1;  
+		int endPage = startPage + 9;
+		
+		endPage = endPage > realEndPage ? realEndPage : endPage;
+		
+		JSONObject replyList = new JSONObject();
+		replyList.put("totalCnt", totalCnt);
+		replyList.put("realEndPage", realEndPage);
+		replyList.put("startPage", startPage);
+		replyList.put("endPage", endPage);
+		replyList.put("nowPage", page);
+		replyList.put("list", dao.getHusreplyTotalList(startRow, endRow));
+		
+		out.println(replyList.toJSONString());
+		out.close();
+		
+		return null;
+	}
+
+}

@@ -1,0 +1,330 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<!-- Set the viewport width to device width for mobile -->
+<meta name="viewport" content="width=device-width"/>
+<title>CozyKRoo</title>
+<!-- CSS Files-->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheets/style.css">
+
+<!-- FONT Files-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheets/skins/blue.css">
+<!-- skin color -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheets/responsive.css">
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+</head>
+<style>
+
+	h1, h2, h3, h4, a, p, li, div, input{
+		font-family: 'Gowun Dodum', sans-serif !important;
+	}
+		
+	li>a {
+		font-size: 30px;
+	}
+	.headermenu{
+		width:1000px !important;
+	}
+	.centersectiontitle{
+		display: inline-block;
+		width: 470px;
+	}
+	.wrapper{
+		width: 450px;
+		display: inline-block;
+	}
+	.twelve{
+		width: 200px;
+	}
+	table {
+	width: 112%;
+}
+	.loginBox{
+		width: 240px;
+		height: 150px;
+		float: right;
+		border: 0.5px solid #c6c6c6;
+		background-color: #f9f9f9;
+		text-align: center;
+    	padding-top: 35px;
+    	margin-right: -50px;
+    	border-radius: 10%;
+    	margin-top: 10px;
+    	margin-bottom: 5px;
+	}
+	#icon{
+		height: 100px;
+	}
+	#logo{
+		margin-bottom: 7px;
+		margin-top: 14px;
+	}
+	.logo{
+		width: 1000px !important;
+		margin-bottom: 10px;
+		margin-top: 15px;
+	}
+	.headerlogo{
+		width: 900px !important;
+	}
+	.cf{
+		margin-top: 10px;
+    	width: 1000px;
+    	height: 180px;
+		float:left;
+	}
+	.cf_img{
+	object-fit: contain;
+    width: inherit;
+    height: inherit;
+	}
+	.info{
+		float: right;
+		margin-top: 86px;
+    	font-size: 16px;
+	}
+	.rank{
+		width: 50px !important;
+		height: 50px !important;
+		border: none !important;
+		margin: 0 !important;
+	}
+	 .rankTd{
+	 	padding: 0;
+	 	width: 50px;
+	 	border-bottom: 1px solid #ccc;
+	 }
+	 .rankTd2{
+	 	text-align: center;
+	 	vertical-align: middle;
+	 	border-bottom: 1px solid #ccc;
+	 }
+	 td{
+	 	white-space: nowrap !important; 
+  		overflow: hidden !important;
+  		text-overflow: ellipsis !important;
+  		max-width: 465px;
+	 }
+</style>
+
+<body>
+
+<!-- HEADER-->
+<jsp:include page="header.jsp"/>
+<!-- ANIMATED COLUMNS 
+================================================== -->
+<div class="row">
+	<div class="twelve columns">
+		<div class="cf">
+			<img src="${pageContext.request.contextPath}/assets/images/boardView.png" class="cf_img">
+		</div>
+	</div>
+</div>
+<!-- CONTENT 
+================================================== -->
+<div class="row">
+	<div class="wrapper">
+		<div class="twelve columns">
+			<div class="centersectiontitle">
+				<h4><a href="${pageContext.request.contextPath}/boards/BoardsList.bo?type=1" style="font-size: 19px;">육아 노하우</a></h4>
+			</div>
+			<table id="knowhow_id">
+				<tr><td id="k1">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="k2">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="k3">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="k4">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="k5">등록된 게시물이 없습니다.</td></tr>
+			</table>
+		</div>
+	</div>
+	<div class="wrapper" style="float: right;">
+		<div class="twelve columns">
+			<div class="centersectiontitle">
+				<h4><a href="${pageContext.request.contextPath}/boards/BoardsList.bo?type=2" style="font-size: 19px;">내 남편 자랑</a></h4>
+			</div>
+			<table id="husband_id">
+				<tr><td id="h1">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="h2">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="h3">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="h4">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="h5">등록된 게시물이 없습니다.</td></tr>
+			</table>
+		</div>
+	</div>
+	<div class="wrapper">
+		<div class="twelve columns">
+			<div class="centersectiontitle">
+				<h4><a href="${pageContext.request.contextPath}/boards/BoardsList.bo?type=3" style="font-size: 19px;">중고 물품 나눔</a></h4>
+			</div>
+			<table id="secondhend_id">
+				<tr><td id="s1">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="s2">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="s3">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="s4">등록된 게시물이 없습니다.</td></tr>
+				<tr><td id="s5">등록된 게시물이 없습니다.</td></tr>
+			</table>
+		</div>
+	</div>
+	<div class="wrapper" style="float: right;">
+		<div class="twelve columns">
+			<div class="centersectiontitle">
+				<h4>다이어리 (준비중입니다.)</h4>
+			</div>
+			<table>
+				<tr><td>등록된 게시물이 없습니다.</td></tr>
+				<tr><td>등록된 게시물이 없습니다.</td></tr>
+				<tr><td>등록된 게시물이 없습니다.</td></tr>
+				<tr><td>등록된 게시물이 없습니다.</td></tr>
+				<tr><td>등록된 게시물이 없습니다.</td></tr>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="hr">
+</div>
+<!-- CLIENTS 
+================================================== -->
+<div class="row">
+	<div class="wrapper">
+		<div class="twelve columns">
+			<div class="centersectiontitle">
+				<h4>이달의 남편</h4>
+			</div>
+		</div>
+		<div class="twelve columns">
+			<div class="image_carousel fitcarousel">
+			<div class="">
+			<table style="width: 365px; border: none;">
+				<tr>
+					<td class="rankTd"><img src="${pageContext.request.contextPath}/assets/css/img/rank1.png" alt=""  class="rank"/></td>
+					<td class="rankTd2">1등의 아이디</td>
+				</tr>
+				<tr>
+					<td class="rankTd"><img src="${pageContext.request.contextPath}/assets/css/img/rank2.png" alt=""  class="rank"/></td>
+					<td class="rankTd2">2등의 아이디</td>
+				</tr>
+				<tr>
+					<td class="rankTd"><img src="${pageContext.request.contextPath}/assets/css/img/rank3.png" alt=""  class="rank"/></td>
+					<td class="rankTd2">3등의 아이디</td>
+				</tr>
+			</table>
+				</div>
+				<div class="clearfix">
+				</div>
+				<!-- <a class="prev foo2_prev" href="#"><span>prev</span></a>
+				<a class="next foo2_next" href="#"><span>next</span></a> -->
+			</div>
+		</div>
+	</div>
+	<div class="wrapper" style="float: right;">
+		<div class="twelve columns">
+				<div class="centersectiontitle">
+					<h4>이달의 다이어리왕</h4>
+				</div>
+			</div>
+		<div class="twelve columns">
+			<div class="image_carousel fitcarousel">
+			<div class="foo3">
+					<table style="width: 365px; border: none;">
+				<tr>
+					<td class="rankTd"><img src="${pageContext.request.contextPath}/assets/css/img/rank1.png" alt=""  class="rank"/></td>
+					<td class="rankTd2">1등의 아이디</td>
+				</tr>
+				<tr>
+					<td class="rankTd"><img src="${pageContext.request.contextPath}/assets/css/img/rank2.png" alt=""  class="rank"/></td>
+					<td class="rankTd2">2등의 아이디</td>
+				</tr>
+				<tr>
+					<td class="rankTd"><img src="${pageContext.request.contextPath}/assets/css/img/rank3.png" alt=""  class="rank"/></td>
+					<td class="rankTd2">3등의 아이디</td>
+				</tr>
+			</table>
+				</div>
+				<div class="clearfix">
+				</div>
+				<a class="prev foo3_prev" href="#"><span>prev</span></a>
+				<a class="next foo3_next" href="#"><span>next</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- FOOOTER 
+================================================== -->
+<jsp:include page="footer.jsp"/>
+<c:if test="${param.code eq 1}">
+	<script>
+		alert("네이버 로그인을 하셨다면 개인정보 수정에서 핸드폰 번호를 저장해주세요.");
+	</script>
+</c:if>
+<!-- JAVASCRIPTS 
+================================================== -->
+<!-- Javascript files placed here for faster loading -->
+<script src="${pageContext.request.contextPath}/assets/javascripts/foundation.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/javascripts/jquery.carouFredSel-6.0.5-packed.js"></script>
+</body>
+<script>
+window.onload = function(){
+	$.ajax({
+		url : "${pageContext.request.contextPath}/boards/knoRetrunList.bo",
+		dataType : "json",
+		success	: function(json){
+			console.log(json);
+			for(var i = 0; i<json.length; i++){
+				$("#k"+ (i + 1)).html("<a href='${pageContext.request.contextPath}/boards/BoardsView.bo?type=1&board_num=" + json[i].board_num + "'>"+ json[i].title +"</a>");
+			}
+		}		
+	})
+	setTimeout(function(){},100);
+	$.ajax({
+		url : "${pageContext.request.contextPath}/boards/husRetrunList.bo",
+		dataType : "json",
+		success	: function(json){
+			console.log(json);
+			for(var i = 0; i<json.length; i++){
+				$("#h"+ (i + 1)).html("<a href='${pageContext.request.contextPath}/boards/BoardsView.bo?type=2&board_num=" + json[i].board_num + "'>"+ json[i].title +"</a>");
+			}
+		}		
+	})
+	setTimeout(function(){},100);
+	$.ajax({
+		url : "${pageContext.request.contextPath}/boards/secRetrunList.bo",
+		dataType : "json",
+		success	: function(json){
+			console.log(json);
+			for(var i = 0; i<json.length; i++){
+				$("#s"+ (i + 1)).html("<a href='${pageContext.request.contextPath}/boards/BoardsView.bo?type=3&board_num=" + json[i].board_num + "'>"+ json[i].title +"</a>");
+			}
+		}		
+	})
+}
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

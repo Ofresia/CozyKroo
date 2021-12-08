@@ -1,0 +1,22 @@
+package com.koreait.app.boards;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.koreait.action.Action;
+import com.koreait.action.ActionForward;
+import com.koreait.app.boards.dao.BoardsDAO;
+
+public class KnoDeleteOkAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		int board_num = Integer.parseInt(req.getParameter("board_num"));
+		
+		BoardsDAO dao = new BoardsDAO();
+		dao.deleteKnowhow(board_num);
+		
+		return null;
+	}
+
+}
